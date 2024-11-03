@@ -83,7 +83,8 @@ def register_commands(cli):
     
     @jina.command()
     @click.argument("prompt")
-    def generate_code(prompt):
+    @click.option("--model", default="claude-3.5-sonnet", help="Reranking model to use")
+    def generate_code(prompt: str, model: str):
         """Generate Jina API code based on the given prompt"""
         try:
             metaprompt = jina_metaprompt()
@@ -105,7 +106,7 @@ Remember to:
 
 Provide the code in a format ready to be saved to a .py file and executed."""
             
-            response = llm.get_model().prompt(full_prompt)
+            response = llm.get_model(model).prompt(full_prompt)
             result = response.text()
             
             click.echo("=== Generated Jina AI Code ===")
