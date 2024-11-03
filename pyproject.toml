@@ -1,0 +1,17 @@
+[project]
+name = "llm-jina"
+version = "0.2a1"
+description = "LLM plugin for interacting with Jina AI APIs"
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = ["llm", "click", "httpx", "requests"]
+
+[tool.setuptools.package-data]
+llm_jina = ["**/*.md"]
+
+[project.entry-points.llm]
+jina = "llm_jina:register_jina"
+
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
