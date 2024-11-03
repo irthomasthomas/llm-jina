@@ -1,18 +1,31 @@
 [tool.poetry]
 name = "llm-jina"
-version = "0.2a1"
+version = "0.1a"
 description = "LLM plugin for interacting with Jina AI APIs"
 authors = ["Your Name <your.email@example.com>"]
 license = "Apache-2.0"
 readme = "README.md"
-homepage = "https://github.com/yourusername/llm-jina"
-repository = "https://github.com/yourusername/llm-jina"
-documentation = "https://github.com/yourusername/llm-jina#readme"
+homepage = "https://github.com/irthomasthomas/llm-jina"
+repository = "https://github.com/irthomasthomas/llm-jina"
+documentation = "https://github.com/irthomasthomas/llm-jina#readme"
 packages = [{include = "llm_jina"}]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-llm = "^0.1"
+llm = "^0.15"
 click = "^8.0"
 requests = "^2.26"
 httpx = "^0.23"
@@ -26,4 +39,3 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins.llm]
 jina = "llm_jina"
-
