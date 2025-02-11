@@ -4,8 +4,9 @@ import json
 from typing import List, Dict, Any, Union
 import click
 from .exceptions import APIError
+import time
 
-JINA_API_KEY = os.environ.get("JINA_API_KEY")
+JINA_API_KEY = os.environ.get("JINA_API_KEY")  # Get your Jina AI API key for free: https://jina.ai/?sui=apikey
 
 def jina_request(url: str, data: Dict[str, Any], headers: Dict[str, str] = None) -> Dict[str, Any]:
     """
@@ -34,7 +35,7 @@ def jina_request(url: str, data: Dict[str, Any], headers: Dict[str, str] = None)
         default_headers.update(headers)
 
     try:
-        with httpx.Client() as client:
+        with httpx.Client(timeout=10) as client:  # Increased timeout to 10 seconds
             response = client.post(url, json=data, headers=default_headers)
             response.raise_for_status()
             return response.json()
@@ -55,8 +56,7 @@ def jina_search(query: str, site: str = None, with_links: bool = False, with_ima
         Dict[str, Any]: The search results.
     """
     url = "https://s.jina.ai/"
-    headers = {}
-    
+    headers = {"X-No-Cache": "true"}  # force no-cache retrieval
     if site:
         headers["X-Site"] = site
     if with_links:
@@ -69,7 +69,8 @@ def jina_search(query: str, site: str = None, with_links: bool = False, with_ima
         "options": "Default"
     }
 
-    return jina_request(url, data, headers)
+    response = jina_request(url, data, headers)
+    return response["data"]
 
 def jina_read(url: str, with_links: bool = False, with_images: bool = False) -> Dict[str, Any]:
     """
@@ -84,8 +85,11 @@ def jina_read(url: str, with_links: bool = False, with_images: bool = False) -> 
         Dict[str, Any]: The parsed content.
     """
     api_url = "https://r.jina.ai/"
-    headers = {}
-    
+    headers = {
+        "X-No-Cache": "true",
+        "X-Engine": "readerlm-v2",
+        "X-Return-Format": "text"
+    }
     if with_links:
         headers["X-With-Links-Summary"] = "true"
     if with_images:
@@ -96,7 +100,8 @@ def jina_read(url: str, with_links: bool = False, with_images: bool = False) -> 
         "options": "Default"
     }
 
-    return jina_request(api_url, data, headers)
+    response = jina_request(api_url, data, headers)
+    return response["data"]
 
 def jina_ground(statement: str, sites: List[str] = None) -> Dict[str, Any]:
     """
@@ -110,7 +115,7 @@ def jina_ground(statement: str, sites: List[str] = None) -> Dict[str, Any]:
         Dict[str, Any]: The grounding results.
     """
     url = "https://g.jina.ai/"
-    headers = {}
+    headers = {"X-No-Cache": "true"}
     if sites:
         headers["X-Site"] = ",".join(sites)
 
@@ -118,7 +123,8 @@ def jina_ground(statement: str, sites: List[str] = None) -> Dict[str, Any]:
         "statement": statement
     }
 
-    return jina_request(url, data, headers)
+    response = jina_request(url, data, headers)
+    return response["data"]
 
 def jina_embed(text: str, model: str = "jina-embeddings-v3") -> Dict[str, Any]:
     """
@@ -137,7 +143,8 @@ def jina_embed(text: str, model: str = "jina-embeddings-v3") -> Dict[str, Any]:
         "model": model
     }
 
-    return jina_request(url, data)
+    response = jina_request(url, data)
+    return response["data"]
 
 def rerank_documents(query: str, documents: List[str], model: str = "jina-reranker-v2-base-multilingual") -> List[Dict[str, Any]]:
     """
@@ -164,7 +171,9 @@ def rerank_documents(query: str, documents: List[str], model: str = "jina-rerank
     response = jina_request(url, data)
     return response["results"]
 
-def segment_text(content: str, tokenizer: str = "cl100k_base", return_tokens: bool = False, return_chunks: bool = True, max_chunk_length: int = 1000) -> Dict[str, Any]:
+def segment_text(content: str, tokenizer: str = "cl100k_base", return_tokens: bool = False,
+                 return_chunks: bool = True, max_chunk_length: int = 1000,
+                 head: int = None, tail: int = None) -> Dict[str, Any]:
     """
     Segment text into tokens or chunks using the Jina AI Segmenter API.
 
@@ -174,6 +183,8 @@ def segment_text(content: str, tokenizer: str = "cl100k_base", return_tokens: bo
         return_tokens (bool): Whether to return tokens in the response. Default is False.
         return_chunks (bool): Whether to return chunks in the response. Default is True.
         max_chunk_length (int): Maximum characters per chunk. Only effective if 'return_chunks' is True. Default is 1000.
+        head (int, optional): Number of tokens to include at the beginning. Default is None.
+        tail (int, optional): Number of tokens to include at the end. Default is None.
 
     Returns:
         Dict[str, Any]: The response from the Jina AI Segmenter API.
@@ -189,6 +200,10 @@ def segment_text(content: str, tokenizer: str = "cl100k_base", return_tokens: bo
         "return_chunks": return_chunks,
         "max_chunk_length": max_chunk_length
     }
+    if head is not None:
+        data["head"] = head
+    if tail is not None:
+        data["tail"] = tail
     return jina_request(url, data)
 
 def jina_classify(input_data: List[Union[str, Dict[str, str]]], labels: List[str], model: str) -> Dict[str, Any]:
@@ -213,10 +228,11 @@ def jina_classify(input_data: List[Union[str, Dict[str, str]]], labels: List[str
         "labels": labels
     }
 
-    try:
-        return jina_request(url, data)
-    except APIError as e:
-        raise click.ClickException(f"Error occurred while classifying: {str(e)}. Please check your input data and try again.")
+    result = jina_request(url, data)
+    if "200" in result and "data" in result["200"]:
+        return result["200"]["data"]
+    else:
+        return result
 
 def jina_metaprompt() -> str:
     """
@@ -259,7 +275,7 @@ def fetch_metaprompt_from_url() -> str:
     """
     url = "https://docs.jina.ai"
     try:
-        with httpx.Client(timeout=3) as client:
+        with httpx.Client(timeout=10) as client:
             response = client.get(url)
             response.raise_for_status()
             return response.text

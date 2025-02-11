@@ -1,4 +1,3 @@
-
 import httpx
 import click
 import os
@@ -13,12 +12,12 @@ def fetch_metaprompt() -> str:
     """
     url = "https://docs.jina.ai"
     try:
-        with httpx.Client(timeout=3) as client:
+        with httpx.Client(timeout=10) as client:
             response = client.get(url)
             response.raise_for_status()
             return response.text
     except (httpx.RequestError, httpx.TimeoutException) as e:
-        click.echo(f"Warning: Failed to fetch metaprompt from {url}: {str(e)}")
+        click.echo(f"Error fetching metaprompt: {str(e)}")
         return None
 
 def jina_metaprompt() -> str:
@@ -47,6 +46,8 @@ def jina_metaprompt() -> str:
             except IOError as e:
                 click.echo(f"Warning: Failed to update {cache_file}: {str(e)}")
             return metaprompt_content
+        else:
+            raise click.ClickException("Failed to fetch metaprompt from remote URL.")
     try:
         with open(cache_file, "r") as file:
             return file.read()
