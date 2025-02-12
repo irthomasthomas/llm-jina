@@ -3,8 +3,8 @@ import os
 import json
 from typing import List, Dict, Any, Union
 import click
-from .exceptions import APIError
 import time
+from .exceptions import APIError
 
 JINA_API_KEY = os.environ.get("JINA_API_KEY")  # Get your Jina AI API key for free: https://jina.ai/?sui=apikey
 
@@ -35,12 +35,16 @@ def jina_request(url: str, data: Dict[str, Any], headers: Dict[str, str] = None)
         default_headers.update(headers)
 
     try:
-        with httpx.Client(timeout=10) as client:  # Increased timeout to 10 seconds
+        with httpx.Client(timeout=30) as client:
             response = client.post(url, json=data, headers=default_headers)
             response.raise_for_status()
             return response.json()
     except httpx.HTTPError as e:
         raise APIError(f"Error calling Jina AI API: {str(e)}")
+    except httpx.RequestError as e:
+        raise APIError(f"Network error: {e}")
+    except Exception as e:
+        raise APIError(f"Unexpected error: {e}")
 
 def jina_search(query: str, site: str = None, with_links: bool = False, with_images: bool = False) -> Dict[str, Any]:
     """
@@ -234,6 +238,23 @@ def jina_classify(input_data: List[Union[str, Dict[str, str]]], labels: List[str
     else:
         return result
 
+def fetch_metaprompt_from_url() -> str:
+    """
+    Fetches the metaprompt content from a remote URL.
+
+    Returns:
+        str: The metaprompt content, or None if the fetch fails.
+    """
+    url = "https://docs.jina.ai"
+    try:
+        with httpx.Client(timeout=10) as client:
+            response = client.get(url)
+            response.raise_for_status()
+            return response.text
+    except (httpx.RequestError, httpx.TimeoutException, httpx.HTTPError) as e:
+        click.echo(f"Warning: Failed to fetch metaprompt from {url}: {str(e)}")
+        return None
+
 def jina_metaprompt() -> str:
     """
     Retrieves the Jina metaprompt, either from a local cache or by fetching it remotely.
@@ -265,20 +286,3 @@ def jina_metaprompt() -> str:
             return file.read()
     except FileNotFoundError:
         raise click.ClickException(f"{cache_file} not found")
-
-def fetch_metaprompt_from_url() -> str:
-    """
-    Fetches the metaprompt content from a remote URL.
-
-    Returns:
-        str: The metaprompt content, or None if the fetch fails.
-    """
-    url = "https://docs.jina.ai"
-    try:
-        with httpx.Client(timeout=10) as client:
-            response = client.get(url)
-            response.raise_for_status()
-            return response.text
-    except (httpx.RequestError, httpx.TimeoutException) as e:
-        click.echo(f"Warning: Failed to fetch metaprompt from {url}: {str(e)}")
-        return None

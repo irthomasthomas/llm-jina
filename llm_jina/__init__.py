@@ -1,7 +1,5 @@
-import click
-import llm
-from .commands import register_jina_commands
+__version__ = "0.1.0"
 
-@llm.hookimpl
 def register_commands(cli):
+    from .commands import register_jina_commands
     register_jina_commands(cli)
