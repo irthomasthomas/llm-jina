@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "llm-jina"
-version = "0.2.0"
+version = "0.3.0"
 description = "LLM plugin for Jina AI"
 readme = "README.md"
 requires-python = ">=3.7"
@@ -17,15 +17,13 @@ classifiers = [
 dependencies = [
     "llm>=0.20",
     "httpx>=0.27.0",
-    "sqlite-utils>=3.36"
+    "sqlite-utils>=3.36",
+    "requests>=2.25.0"
 ]
 
 [project.optional-dependencies]
-dev = ["pytest", "black", "flake8", "mypy", "isort"]
+dev = ["pytest", "pytest-cov", "black", "flake8", "mypy", "isort"]
 
-[tool.setuptools.packages.find]
-where = ["src"]  # MUST be here to tell setuptools where to look.
 
-[project.entry-points."llm.commands"]
-jina = "llm_jina:register_jina_commands"
-
+[project.entry-points.llm]
+jina = "llm_jina"

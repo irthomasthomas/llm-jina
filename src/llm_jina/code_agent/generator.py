@@ -1,7 +1,10 @@
+import logging
 from pathlib import Path
 from llm import get_model
-from ..api_interactions import jina_metaprompt
+from llm_jina.metaprompt import jina_metaprompt
 from .utils import read_prompt_template
+
+logger = logging.getLogger(__name__)
 
 TEST_PREAMBLE = """# Auto-generated test suite for {filename}
 import pytest
@@ -20,8 +23,12 @@ class CodeGenerator:
         self.feedback_prompt = read_prompt_template(Path(__file__).parent / "feedback_prompt.txt")
 
     def call_model(self, prompt_text: str) -> str:
-        response = get_model(self.model).prompt(prompt_text)
-        return self.extract_code(response.text())
+        try:
+            response = get_model(self.model).prompt(prompt_text)
+            return self.extract_code(response.text())
+        except Exception as e:
+            logger.error(f"Error calling model: {e}")
+            raise
 
     def extract_code(self, text: str) -> str:
         if "```python" in text and "```" in text:
@@ -33,7 +40,14 @@ class CodeGenerator:
     def generate_initial_code(self) -> str:
         metaprompt_content = jina_metaprompt()
         prompt = self.codegen_prompt.format(metaprompt=metaprompt_content, task=self.task)
-        return self.call_model(prompt)
+        logger.debug(f"Generating initial code with prompt:\n{prompt}")
+        try:
+            code = get_model(self.model).prompt(prompt)
+            logger.debug(f"Generated initial code:\n{code}")
+            return code
+        except Exception as e:
+            logger.error(f"Error generating initial code: {e}")
+            raise
 
     def generate_tests(self, code: str, module_name: str = "generated") -> str:
         prompt = self.testgen_prompt.format(task=self.task, code=code)
@@ -42,6 +56,6 @@ class CodeGenerator:
 
     def generate_new_version(self, code: str, error_feedback: list[str]) -> str:
         prompt = self.feedback_prompt.format(
-            task=self.task, error_feedback="\\n".join(error_feedback), code=code
+            task=self.task, error_feedback="\n".join(error_feedback), code=code
         )
         return self.call_model(prompt)
