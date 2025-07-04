@@ -1,0 +1,12 @@
+Generate a detailed feedback report for the generated pytest-based test suite.
+
+Task Description:
+{task}
+
+Generated Test Suite:
+{test_code}
+
+Instructions:
+- Evaluate the test suite for coverage of typical and edge-case scenarios.
+- Offer concise, actionable feedback and suggestions for improvements.
+- Do not include any extra explanations, just the feedback.
