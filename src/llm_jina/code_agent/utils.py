@@ -1,17 +1,43 @@
-from pathlib import Path
-import click
+import llm
+from llm.cli import logs_db_path
+import sqlite_utils
+import datetime
+import uuid
 
-def read_prompt_template(prompt_file: Path) -> str:
-    try:
-        with prompt_file.open("r", encoding="utf-8") as f:
-            return f.read()
-    except FileNotFoundError:
-        raise click.ClickException(f"Prompt template not found: {prompt_file}")
-    except Exception as e:
-        raise click.ClickException(f"Error reading prompt template: {e}")
+def log_to_database(model, prompt, response):
+    """
+    Manually logs a prompt and response to the LLM database.
+    """
+    db = sqlite_utils.Database(logs_db_path())
+    
+    response_row = {
+        "id": f"jina-{uuid.uuid4()}",
+        "model": model.model_id,
+        "prompt": prompt,
+        "response": response.text(),
+        "datetime_utc": datetime.datetime.utcnow().isoformat(),
+        "duration_ms": 0, # Placeholder
+    }
+    
+    responses_table = db.table("responses")
+    responses_table.insert(response_row, pk="id", alter=True)
 
-def format_error(reason: str, exception: Exception) -> str:
-    return f"{reason}: {str(exception)}"
 
-def aggregate_failures(failures: list[dict]) -> str:
-    return "\n".join([f"Test {f.get('test', 'unknown')}: {f.get('message', 'No message')}" for f in failures])
+def log_code_generation_workflow(task, model, max_retries, final_code, final_test_code, success):
+    """
+    Logs the result of a code generation workflow to the database.
+    """
+    db = sqlite_utils.Database(logs_db_path())
+
+    workflow_row = {
+        "task": task,
+        "model": model,
+        "max_retries": max_retries,
+        "final_code": final_code,
+        "final_test_code": final_test_code,
+        "success": success,
+        "timestamp": datetime.datetime.utcnow().isoformat(),
+    }
+
+    workflows_table = db.table("code_generation_workflows")
+    workflows_table.insert(workflow_row, pk="id", alter=True)

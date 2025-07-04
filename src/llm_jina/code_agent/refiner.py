@@ -4,6 +4,7 @@ Handles the refinement of generated code by generating tests and processing feed
 import logging
 import llm
 import re
+from . import utils
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
@@ -47,6 +48,7 @@ class CodeRefiner:
         prompt = self.testgen_prompt_template.format(task=self.task, code=code_to_test)
         logger.debug("Generating tests...")
         response = self.model.prompt(prompt)
+        utils.log_to_database(self.model, prompt, response)
         
         match = re.search(r"```python\n(.*?)\n```", response.text(), re.DOTALL)
         test_code = match.group(1).strip() if match else response.text().strip()
