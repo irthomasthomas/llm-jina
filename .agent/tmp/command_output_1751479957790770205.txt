@@ -1,0 +1,50 @@
+Obtaining file:///home/thomas/Projects/llm/plugins/Utilities
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Requirement already satisfied: llm in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from llm-dev==0.1.0) (0.26)
+Requirement already satisfied: click in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from llm-dev==0.1.0) (8.2.1)
+Requirement already satisfied: condense-json>=0.1.3 in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from llm->llm-dev==0.1.0) (0.1.3)
+Requirement already satisfied: openai>=1.55.3 in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from llm->llm-dev==0.1.0) (1.93.0)
+Requirement already satisfied: click-default-group>=1.2.3 in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from llm->llm-dev==0.1.0) (1.2.4)
+Requirement already satisfied: sqlite-utils>=3.37 in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from llm->llm-dev==0.1.0) (3.38)
+Requirement already satisfied: sqlite-migrate>=0.1a2 in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from llm->llm-dev==0.1.0) (0.1b0)
+Requirement already satisfied: pydantic>=2.0.0 in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from llm->llm-dev==0.1.0) (2.11.7)
+Requirement already satisfied: PyYAML in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from llm->llm-dev==0.1.0) (6.0.2)
+Requirement already satisfied: pluggy in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from llm->llm-dev==0.1.0) (1.6.0)
+Requirement already satisfied: python-ulid in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from llm->llm-dev==0.1.0) (3.0.0)
+Requirement already satisfied: setuptools in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from llm->llm-dev==0.1.0) (80.9.0)
+Requirement already satisfied: pip in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from llm->llm-dev==0.1.0) (25.1.1)
+Requirement already satisfied: puremagic in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from llm->llm-dev==0.1.0) (1.29)
+Requirement already satisfied: anyio<5,>=3.5.0 in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from openai>=1.55.3->llm->llm-dev==0.1.0) (4.9.0)
+Requirement already satisfied: distro<2,>=1.7.0 in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from openai>=1.55.3->llm->llm-dev==0.1.0) (1.9.0)
+Requirement already satisfied: httpx<1,>=0.23.0 in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from openai>=1.55.3->llm->llm-dev==0.1.0) (0.23.3)
+Requirement already satisfied: jiter<1,>=0.4.0 in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from openai>=1.55.3->llm->llm-dev==0.1.0) (0.10.0)
+Requirement already satisfied: sniffio in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from openai>=1.55.3->llm->llm-dev==0.1.0) (1.3.1)
+Requirement already satisfied: tqdm>4 in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from openai>=1.55.3->llm->llm-dev==0.1.0) (4.67.1)
+Requirement already satisfied: typing-extensions<5,>=4.11 in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from openai>=1.55.3->llm->llm-dev==0.1.0) (4.14.0)
+Requirement already satisfied: idna>=2.8 in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from anyio<5,>=3.5.0->openai>=1.55.3->llm->llm-dev==0.1.0) (3.10)
+Requirement already satisfied: certifi in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from httpx<1,>=0.23.0->openai>=1.55.3->llm->llm-dev==0.1.0) (2025.6.15)
+Requirement already satisfied: httpcore<0.17.0,>=0.15.0 in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from httpx<1,>=0.23.0->openai>=1.55.3->llm->llm-dev==0.1.0) (0.16.3)
+Requirement already satisfied: rfc3986<2,>=1.3 in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from rfc3986[idna2008]<2,>=1.3->httpx<1,>=0.23.0->openai>=1.55.3->llm->llm-dev==0.1.0) (1.5.0)
+Requirement already satisfied: h11<0.15,>=0.13 in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from httpcore<0.17.0,>=0.15.0->httpx<1,>=0.23.0->openai>=1.55.3->llm->llm-dev==0.1.0) (0.14.0)
+Requirement already satisfied: annotated-types>=0.6.0 in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from pydantic>=2.0.0->llm->llm-dev==0.1.0) (0.7.0)
+Requirement already satisfied: pydantic-core==2.33.2 in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from pydantic>=2.0.0->llm->llm-dev==0.1.0) (2.33.2)
+Requirement already satisfied: typing-inspection>=0.4.0 in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from pydantic>=2.0.0->llm->llm-dev==0.1.0) (0.4.1)
+Requirement already satisfied: sqlite-fts4 in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from sqlite-utils>=3.37->llm->llm-dev==0.1.0) (1.0.3)
+Requirement already satisfied: tabulate in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from sqlite-utils>=3.37->llm->llm-dev==0.1.0) (0.9.0)
+Requirement already satisfied: python-dateutil in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from sqlite-utils>=3.37->llm->llm-dev==0.1.0) (2.9.0.post0)
+Requirement already satisfied: six>=1.5 in /home/thomas/.local/share/uv/tools/llm/lib/python3.11/site-packages (from python-dateutil->sqlite-utils>=3.37->llm->llm-dev==0.1.0) (1.17.0)
+Building wheels for collected packages: llm-dev
+  Building editable for llm-dev (pyproject.toml): started
+  Building editable for llm-dev (pyproject.toml): finished with status 'done'
+  Created wheel for llm-dev: filename=llm_dev-0.1.0-0.editable-py3-none-any.whl size=3516 sha256=d1d57c3283e0d3e7ffe8d10365b1a3397204a9df1d96356b714eb62e7336eabe
+  Stored in directory: /tmp/pip-ephem-wheel-cache-4h2pyo6w/wheels/2d/fa/44/99c86ffbd76c7bb38bd7f554f262f9a07531f38b47e23af77b
+Successfully built llm-dev
+Installing collected packages: llm-dev
+Successfully installed llm-dev-0.1.0

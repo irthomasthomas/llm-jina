@@ -1,0 +1,97 @@
+Unfortunately, the provided HTML content is a 404 error page, not a documentation page. Therefore, I cannot extract the steps for creating a new embedding model plugin for the LLM command-line tool from this content.
+
+To get the information you need, you would have to visit the correct documentation URL.
+
+However, based on common patterns for creating plugins for command-line tools, particularly those built with Click or similar frameworks, I can provide a **hypothetical outline of the likely key steps**:
+
+**Hypothetical Key Steps for Creating an LLM Embedding Model Plugin:**
+
+1.  **Understand the Plugin Interface:**
+    *   **Base Class for Embedding Models:** There will likely be a specific Python abstract base class (e.g., `llm.plugins.EmbeddingModel` or similar) that your custom embedding model must inherit from.
+    *   **Required Methods:** This base class will define abstract methods that your plugin must implement. These are almost certainly going to include:
+        *   `__init__(self, key, model_id, etc.)`: For initializing your model with necessary parameters (e.g., API key, model identifier).
+        *   `embed(self, text: str) -> list[float]`: The core method that takes a string of text and returns a list of floats (the embedding vector).
+        *   Possibly `batch_embed(self, texts: list[str]) -> list[list[float]]`: For optimizing performance by embedding multiple texts at once.
+        *   `cost_per_token`: (Optional, but good practice) To indicate the cost of using the model.
+        *   `max_tokens`: (Optional) To indicate the maximum input token length.
+        *   `model_name`: (Optional) A display name for the model.
+        *   `supports_text_embedding`: A boolean indicating if the model supports text embedding (as opposed to, say, image embedding).
+
+2.  **Create Your Python Module/Package:**
+    *   Organize your code within a Python package (e.g., `llm_myembedding_plugin/`).
+    *   Define your custom embedding model class within this package, inheriting from the LLM base class.
+
+    ```python
+    # llm_myembedding_plugin/model.py
+    import llm
+
+    # Assuming llm.EmbeddingModel is the base class
+    # You'll need to confirm the actual import path and class name from the docs.
+    class MyCustomEmbeddingModel(llm.plugins.EmbeddingModel):
+        model_id = "my-custom-embedding-model" # A unique ID for your model
+        batch_size = 100 # Example, for batching
+
+        def __init__(self, key: str = None, **kwargs):
+            super().__init__(self.model_id, f"My Custom Model ({self.model_id}) for LLM CLI")
+            self.api_key = key
+            # Initialize your specific API client or ML model here
+            print(f"MyCustomEmbeddingModel initialized with key: {self.api_key}")
+
+        def embed(self, text: str) -> list[float]:
+            # This is where you'd make an API call or run your local model
+            # to get the embedding for 'text'
+            print(f"Embedding text: {text[:50]}...")
+            # Simulate an embedding
+            embedding = [float(ord(c) % 100) / 100.0 for c in text[:100]] + [0.0] * (1536 - len(text[:100]))
+            return embedding[:1536] # Ensure correct embedding dimension
+
+        # You might also implement batch_embed for efficiency
+        # def batch_embed(self, texts: list[str]) -> list[list[float]]:
+        #     # ... make batched API calls ...
+        #     return [self.embed(text) for text in texts] # Simple example, optimize this
+
+        @property
+        def supports_text_embedding(self) -> bool:
+            return True
+
+        # Add other properties/methods as required by the abstract base class
+    ```
+
+3.  **Define Plugin Entry Points in `pyproject.toml` (or `setup.py`):**
+    *   This is crucial for `llm` to discover your plugin. You'll typically use the `[project.entry-points]` table (for `pyproject.toml` and PEP 621) or `entry_points` in `setup.py`.
+    *   The entry point group will likely be specific to `llm` and its plugin system, e.g., `llm.embedding_models`.
+    *   The value will be a key (how your model is referenced) mapping to a Python path pointing to your model class.
+
+    ```toml
+    # pyproject.toml
+    [build-system]
+    requires = ["setuptools>=61.0"]
+    build-backend = "setuptools.build_backend"
+
+    [project]
+    name = "llm-my-embedding-plugin"
+    version = "0.1.0"
+    authors = [
+        {name = "Your Name", email = "your.email@example.com"},
+    ]
+    description = "A custom LLM embedding plugin for my model"
+    readme = "README.md"
+    requires-python = ">=3.8"
+    license = {text = "MIT License"}
+    dependencies = [
+        "llm", # Specify the version compatability if needed
+        # Add any specific libraries your embedding model needs (e.g., requests, your_ml_framework)
+    ]
+
+    [project.entry-points."llm.embedding_models"]
+    my-custom-model = "llm_myembedding_plugin.model:MyCustomEmbeddingModel"
+    ```
+    *   **Explanation of `llm.embedding_models`**: This is the critical part. It tells `llm` that "my-custom-model" is an embedding model and can be found by importing `MyCustomEmbeddingModel` from `llm_myembedding_plugin.model`.
+
+4.  **Installation and Usage:**
+    *   Users will install your plugin using pip: `pip install llm-my-embedding-plugin`.
+    *   Once installed, `llm` should automatically discover your model.
+    *   Usage would then likely be: `llm embed -m my-custom-model "Hello, world!"`
+    *   If your model requires an API key, there would probably be a mechanism to pass it, e.g., via environment variables (`LLM_MY_CUSTOM_MODEL_KEY=...`) or `llm keys set my-custom-model <your-key>`.
+
+**To get the precise, correct information, you need to consult the official `llm` documentation, specifically the section on creating plugins or extending `llm`.** I recommend checking the project's GitHub repository or searching for "LLM command-line tool plugins" or "LLM embedding model extension".

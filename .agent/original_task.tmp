@@ -1,0 +1,53 @@
+<CODE>
+pwd
+tree -I .venv -I build -I dist -I __pycache__ -I test_env -I venv -I node_modules -I .git -I .mypy_cache -I .pytest_cache
+</CODE>
+/home/thomas/Projects/llm/plugins/Utilities/llm-jina
+.
+├── HELP_REQUEST.md
+├── jina-metaprompt.md
+├── llm_jina
+│   └── __init__.py
+├── poetry.lock
+├── pyproject.toml
+├── pytest.ini
+├── README.md
+├── src
+│   ├── __init__.py
+│   └── llm_jina
+│       ├── classifier.py
+│       ├── client.py
+│       ├── code_agent
+│       │   ├── codegen_prompt.txt
+│       │   ├── executor.py
+│       │   ├── feedback_prompt.txt
+│       │   ├── generator.py
+│       │   ├── __init__.py
+│       │   ├── refiner.py
+│       │   ├── testgen_prompt.txt
+│       │   ├── utils.py
+│       │   └── validator.py
+│       ├── commands.py
+│       ├── deepsearch.py
+│       ├── embeddings.py
+│       ├── exceptions.py
+│       ├── __init__.py
+│       ├── metaprompt.py
+│       ├── reader.py
+│       ├── rerank.py
+│       ├── search.py
+│       └── segmenter.py
+└── tests
+    ├── __init__.py
+    ├── integration
+    │   └── __init__.py
+    └── unit
+        ├── __init__.py
+        ├── test_code_agent_workflow.py
+        └── test_simple_cli.py
+
+8 directories, 34 files
+
+It looks like this is not logging prompts to the llm logs db as it should. Can you verify?
+
+If you don't know how to do this or need more help consult simonw's LLM library docs at /home/thomas/Projects/llm/my-llm/llm-thomas/docs/
