@@ -19,7 +19,6 @@ LLM plugin for interacting with Jina AI APIs
     - [Fact Checking](#fact-checking)
     - [Text Segmentation](#text-segmentation)
     - [Classification](#classification)
-    - [Code Generation](#code-generation)
     - [Metaprompt](#metaprompt)
   - [Development](#development)
   - [Contributing](#contributing)
@@ -91,19 +90,19 @@ llm jina read https://www.nasa.gov/topics/moon-to-mars --with-links --with-image
 Search the web for information:
 
 ```bash
-llm jina search "History of the internet"
+llm jina websearch "History of the internet"
 ```
 
 You can limit the search to a specific domain:
 
 ```bash
-llm jina search "Python programming tutorials" --site docs.python.org 
+llm jina websearch "Python programming tutorials" --site docs.python.org
 ```
 
 Example with multiple options:
 
 ```bash
-llm jina search "Climate change impacts" --site nasa.gov --with-links --with-images
+llm jina websearch "Climate change impacts" --site nasa.gov --with-links --with-images
 ```
 
 ### Fact Checking
@@ -153,24 +152,18 @@ For image classification:
 llm jina classify path/to/cat.jpg path/to/dog.jpg path/to/bird.jpg --labels feline canine avian --image
 ```
 
-### Code Generation
-
-Generate Jina API code based on a prompt:
-
-```bash
-llm jina generate-code "Create a function that searches Wikipedia for information about famous scientists and reranks the results based on relevance to the query."
-```
-
-```bash
-llm jina generate-code "Create a function that searches for information about AI and reranks the results based on relevance"
-```
-
 ### Metaprompt
 
 Display the Jina metaprompt used for generating code:
 
 ```bash
 llm jina metaprompt
+```
+
+Use the metaprompt to generate code for a specific task:
+
+```bash
+llm jina metaprompt | llm "Write a script to use jina_ai to classify images of cats and dogs."
 ```
 
 ## Development
