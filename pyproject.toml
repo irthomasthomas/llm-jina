@@ -1,5 +1,10 @@
-[tool.poetry]
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
 name = "llm-jina"
+<<<<<<< HEAD
 version = "0.2.2"
 description = "LLM plugin for interacting with Jina AI APIs"
 authors = ["Thomas Bryan <thom@communal-computing.co.uk>"]
@@ -21,10 +26,28 @@ ruff = "^0.4.4"
 
 [tool.poetry.scripts]
 llm-jina = "llm_jina.commands:cli"
+=======
+version = "0.3.0"
+description = "LLM plugin for Jina AI"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
 
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+dependencies = [
+    "llm>=0.20",
+    "httpx>=0.27.0",
+    "sqlite-utils>=3.36",
+    "requests>=2.25.0"
+]
 
-[tool.poetry.plugins.llm]
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov", "black", "flake8", "mypy", "isort"]
+>>>>>>> origin/main
+
+
+[project.entry-points.llm]
 jina = "llm_jina"

@@ -1,11 +1,11 @@
-# llm-jina
+# llm-jina Plugin
 
-[![PyPI](https://img.shields.io/pypi/v/llm-jina.svg)](https://pypi.org/project/llm-jina/)
-[![Changelog](https://img.shields.io/github/v/release/yourusername/llm-jina?include_prereleases&label=changelog)](https://github.com/yourusername/llm-jina/releases)
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/yourusername/llm-jina/blob/main/LICENSE)
+LLM Plugin for Jina AI: Powerful AI-powered interactions across multiple domains.
 
-LLM plugin for interacting with Jina AI APIs
+## Overview
+The `llm-jina` plugin integrates Jina AI services with Simon Willison's llm CLI tool, providing a comprehensive set of AI-powered capabilities directly accessible from the command line.
 
+<<<<<<< HEAD
 ## Table of Contents
 - [llm-jina](#llm-jina)
   - [Table of Contents](#table-of-contents)
@@ -22,74 +22,78 @@ LLM plugin for interacting with Jina AI APIs
     - [Metaprompt](#metaprompt)
   - [Development](#development)
   - [Contributing](#contributing)
+=======
+## Features
+
+- **Web Search** - Search the web with options for domain filtering
+- **URL Content Reading** - Extract and process content from URLs
+- **Fact Checking** - Verify the factual accuracy of statements
+- **Text Embeddings** - Generate vector embeddings for text analysis
+- **Document Reranking** - Reorder documents based on relevance to a query
+- **Text Segmentation** - Split text into manageable chunks
+- **Classification** - Categorize text or images into specified labels
+- **Metaprompt Access** - Access Jina's metaprompt system
+>>>>>>> origin/main
 
 ## Installation
 
-Install this plugin in the same environment as [LLM](https://llm.datasette.io/).
-
 ```bash
+pip install llm-jina
+# or
 llm install llm-jina
 ```
 
 ## Configuration
 
-You need to set the `JINA_API_KEY` environment variable with your Jina AI API key. You can get a free API key from [https://jina.ai/?sui=apikey](https://jina.ai/?sui=apikey).
+Set your Jina AI API key:
 
 ```bash
 export JINA_API_KEY=your_api_key_here
 ```
 
-## Usage
+You can get a Jina AI API key from [jina.ai](https://jina.ai/?sui=apikey).
 
-This plugin adds several commands to interact with Jina AI APIs:
+## Usage Examples
 
-### Embedding
-
-Generate embeddings for given texts:
-
+### Search
 ```bash
-llm jina embed "The quick brown fox jumps over the lazy dog."
+llm jina search "AI technology trends"
+llm jina search "machine learning papers" --site arxiv.org
+llm jina search "news today" --links --images
 ```
 
-You can specify a different model using the `--model` option:
-
+### Read URL
 ```bash
-llm jina embed "To be, or not to be, that is the question." --model jina-embeddings-v2-base-en
+llm jina read https://example.com/article
+llm jina read https://blog.jina.ai --links
+llm jina read https://docs.python.org/3/ --format markdown
 ```
 
-### Reranking
-
-Rerank documents based on a query:
-
+### Embed Text
 ```bash
-llm jina rerank "Best sci-fi movies" "Star Wars: A New Hope" "The Matrix" "Blade Runner" "Interstellar" "2001: A Space Odyssey"
+llm jina embed "Your text here"
+llm jina embed "Compare similarity using embeddings" --model jina-embeddings-v3
 ```
 
-You can specify a different model using the `--model` option:
-
+### Rerank Documents
 ```bash
-llm jina rerank "Healthy eating tips" "Eat more fruits and vegetables" "Limit processed foods" "Stay hydrated" --model jina-reranker-v2-base-en 
+llm jina rerank "machine learning" "Document about NLP" "Paper on computer vision" "Article about ML"
 ```
 
-### URL Reading
-
-Read and parse content from a URL:
-
+### Segment Text
 ```bash
-llm jina read https://en.wikipedia.org/wiki/Artificial_intelligence
+llm jina segment "Long text to be split into chunks" --return-chunks
 ```
 
-You can include link and image summaries:
-
+### Classify
 ```bash
-llm jina read https://www.nasa.gov/topics/moon-to-mars --with-links --with-images
+llm jina classify "I love this product!" --labels positive,negative,neutral
+llm jina classify --image cat.jpg dog.jpg --labels cat,dog
 ```
 
-### Web Search
-
-Search the web for information:
-
+### Ground (Fact Checking)
 ```bash
+<<<<<<< HEAD
 llm jina websearch "History of the internet"
 ```
 
@@ -150,16 +154,17 @@ For image classification:
 
 ```bash
 llm jina classify path/to/cat.jpg path/to/dog.jpg path/to/bird.jpg --labels feline canine avian --image
+=======
+llm jina ground "The Earth orbits the Sun" --sites nasa.gov,space.com
+>>>>>>> origin/main
 ```
 
 ### Metaprompt
-
-Display the Jina metaprompt used for generating code:
-
 ```bash
 llm jina metaprompt
 ```
 
+<<<<<<< HEAD
 Use the metaprompt to generate code for a specific task:
 
 ```bash
@@ -167,27 +172,21 @@ llm jina metaprompt | llm "Write a script to use jina_ai to classify images of c
 ```
 
 ## Development
+=======
+## Contributing
+>>>>>>> origin/main
 
-To set up this plugin locally, first checkout the code. Then create a new virtual environment:
+Contributions welcome! Please read the contributing guidelines.
 
-```bash 
-cd llm-jina
-python3 -m venv venv
-source venv/bin/activate
-```
+## Testing
 
-Now install the dependencies and test dependencies:
-
-```bash
-pip install -e '.[test]'
-```
-
-To run the tests:
+Run the test suite:
 
 ```bash
+pip install -e ".[dev]"
 pytest
 ```
 
-## Contributing
+## License
 
-Contributions to this plugin are welcome! Please refer to the [LLM plugin development documentation](https://llm.datasette.io/en/stable/plugins/index.html) for more information on how to get started.
+Apache 2.0
