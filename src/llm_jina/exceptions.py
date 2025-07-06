@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 """
 Custom exceptions for the llm-jina library.
 """
@@ -18,11 +17,3 @@ class CodeValidationError(Exception):
 class TestExecutionError(Exception):
     """Custom exception for errors during test execution."""
     pass
-=======
-class APIError(Exception):
-    """Custom exception for Jina AI API errors."""
-    pass
-
-class CodeValidationError(Exception):
-    pass
->>>>>>> origin/main

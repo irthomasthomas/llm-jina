@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 .agent/
 .DS_Store
 Thumbs.db
@@ -129,7 +128,6 @@ xcshareddata/
 *.egg
 *.egg-info/
 .agent
-=======
 # Python
 __pycache__/
 *.py[cod]
@@ -180,4 +178,3 @@ Thumbs.db
 .coverage
 htmlcov/
 *.log
->>>>>>> origin/main

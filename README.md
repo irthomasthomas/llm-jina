@@ -7,22 +7,25 @@ The `llm-jina` plugin integrates Jina AI services with Simon Willison's llm CLI 
 
 <<<<<<< HEAD
 ## Table of Contents
-- [llm-jina](#llm-jina)
+- [llm-jina Plugin](#llm-jina-plugin)
+  - [Overview](#overview)
   - [Table of Contents](#table-of-contents)
+  - [Features](#features)
   - [Installation](#installation)
   - [Configuration](#configuration)
-  - [Usage](#usage)
-    - [Embedding](#embedding)
-    - [Reranking](#reranking)
-    - [URL Reading](#url-reading)
-    - [Web Search](#web-search)
-    - [Fact Checking](#fact-checking)
+  - [Usage Examples](#usage-examples)
+    - [Read URL](#read-url)
+    - [Embed Text](#embed-text)
+    - [Rerank Documents](#rerank-documents)
+    - [Segment Text](#segment-text)
+    - [Classify](#classify)
+    - [Ground (Fact Checking)](#ground-fact-checking)
     - [Text Segmentation](#text-segmentation)
     - [Classification](#classification)
     - [Metaprompt](#metaprompt)
   - [Development](#development)
-  - [Contributing](#contributing)
-=======
+  - [Testing](#testing)
+  - [License](#license)
 ## Features
 
 - **Web Search** - Search the web with options for domain filtering
@@ -55,13 +58,6 @@ You can get a Jina AI API key from [jina.ai](https://jina.ai/?sui=apikey).
 
 ## Usage Examples
 
-### Search
-```bash
-llm jina search "AI technology trends"
-llm jina search "machine learning papers" --site arxiv.org
-llm jina search "news today" --links --images
-```
-
 ### Read URL
 ```bash
 llm jina read https://example.com/article
@@ -93,7 +89,6 @@ llm jina classify --image cat.jpg dog.jpg --labels cat,dog
 
 ### Ground (Fact Checking)
 ```bash
-<<<<<<< HEAD
 llm jina websearch "History of the internet"
 ```
 
@@ -107,20 +102,6 @@ Example with multiple options:
 
 ```bash
 llm jina websearch "Climate change impacts" --site nasa.gov --with-links --with-images
-```
-
-### Fact Checking
-
-Verify the factual accuracy of a statement:
-
-```bash
-llm jina ground "The Mona Lisa was painted by Leonardo da Vinci."
-```
-
-You can provide specific sites for grounding:
-
-```bash
-llm jina ground "Jina AI offers state-of-the-art AI models." --sites https://jina.ai,https://docs.jina.ai
 ```
 
 ### Text Segmentation 
@@ -154,9 +135,6 @@ For image classification:
 
 ```bash
 llm jina classify path/to/cat.jpg path/to/dog.jpg path/to/bird.jpg --labels feline canine avian --image
-=======
-llm jina ground "The Earth orbits the Sun" --sites nasa.gov,space.com
->>>>>>> origin/main
 ```
 
 ### Metaprompt
@@ -164,7 +142,6 @@ llm jina ground "The Earth orbits the Sun" --sites nasa.gov,space.com
 llm jina metaprompt
 ```
 
-<<<<<<< HEAD
 Use the metaprompt to generate code for a specific task:
 
 ```bash
@@ -172,9 +149,6 @@ llm jina metaprompt | llm "Write a script to use jina_ai to classify images of c
 ```
 
 ## Development
-=======
-## Contributing
->>>>>>> origin/main
 
 Contributions welcome! Please read the contributing guidelines.
 
