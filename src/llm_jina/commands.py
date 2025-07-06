@@ -4,7 +4,7 @@ Command-line interface for llm-jina.
 import click
 import json
 from pathlib import Path
-from . import reader, search, rerank, classifier, segmenter, deepsearch
+from . import reader, search, rerank, classifier, segmenter, deepsearch as ds
 from .metaprompt import jina_metaprompt
 from .exceptions import APIError, CodeValidationError
 
@@ -35,7 +35,7 @@ def websearch(query, site, num_results):
 @click.argument('documents', nargs=-1, required=True)
 @click.option('--model', default='jina-reranker-v2-base-multilingual', help='Reranker model')
 @click.option('--top-n', type=int, help='Number of top results')
-def rerank_docs(query, documents, model, top_n):
+def rerank(query, documents, model, top_n):
     """Rerank documents by relevance."""
     result = rerank.rerank(query=query, documents=list(documents), model=model, top_n=top_n)
     click.echo(json.dumps(result, indent=2))
@@ -52,9 +52,35 @@ def segment(text, return_chunks):
 @click.argument('query')
 def deepsearch(query):
     """Perform comprehensive investigation."""
-    result = deepsearch.deepsearch(query=query)
+    result = ds.deepsearch(query=query)
     click.echo(json.dumps(result, indent=2))
 
 
 if __name__ == '__main__':
     cli()
+
+@cli.command()
+@click.argument('input_text', nargs=-1, required=True)
+@click.option('--labels', required=True, help='Comma-separated list of labels for classification')
+@click.option('--model', help='Model to use for classification (auto-detected if not specified)')
+@click.option('--image', is_flag=True, help='Treat input as image file paths')
+def classify(input_text, labels, model, image):
+    """Classify text or images using Jina AI Classifier API."""
+    labels_list = [label.strip() for label in labels.split(',')]
+    
+    if image:
+        import base64
+        input_data = []
+        for img_path in input_text:
+            try:
+                with open(img_path, 'rb') as img_file:
+                    img_base64 = base64.b64encode(img_file.read()).decode('utf-8')
+                    input_data.append({'image': img_base64})
+            except IOError as e:
+                click.echo(f'Error reading image file {img_path}: {str(e)}', err=True)
+                return
+    else:
+        input_data = list(input_text)
+    
+    result = classifier.classify(inputs=input_data, labels=labels_list, model=model)
+    click.echo(json.dumps(result, indent=2))

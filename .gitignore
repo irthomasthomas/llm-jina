@@ -1,4 +1,4 @@
-.agent
+.agent/
 .DS_Store
 Thumbs.db
 desktop.ini
@@ -127,3 +127,4 @@ DerivedData/
 xcshareddata/
 *.egg
 *.egg-info/
+.agent
